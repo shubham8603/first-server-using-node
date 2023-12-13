@@ -1,22 +1,67 @@
 const http = require('http');
+const fs = require('fs');
 
 const server = http.createServer((req, res) => {
     const url = req.url;
-    console.log(url, req.method, req.headers);
-    //process.exit()
-    res.setHeader('content-type', 'text/html');
+    const method = req.method;
 
-    if (url === '/home') {
-        res.write('<html><body><h1>Welcome home</h1></body></html>');
-    } else if (url === '/about') {
-        res.write('<html><body><h1>Welcome to About Us page</h1></body></html>');
-    } else if (url === '/node') {
-        res.write('<html><body><h1>Welcome to my Node Js project</h1></body></html>');
+    if (url === '/submit' && method === 'POST') {
+        // Handle form submission
+        const body = [];
+
+        req.on('data', (chunk) => {
+            body.push(chunk);
+        });
+
+        req.on('end', () => {
+            const data = Buffer.concat(body).toString();
+            const formData = new URLSearchParams(data);
+            const message = formData.get('message');
+
+            // Overwrite the entire file with the new message
+            fs.writeFile('messages.txt', `${message}\n`, (err) => {
+                if (err) {
+                    console.error('Error writing to file:', err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                } else {
+                    // Redirect with a 302 response
+                    res.writeHead(302, { 'Location': '/thank-you' });
+                    res.end();
+                }
+            });
+        });
     } else {
-        res.write('<html><body><h1>Page not found</h1></body></html>');
-    }
+        // Read the latest message from the file
+        fs.readFile('messages.txt', 'utf8', (err, data) => {
+            if (err && err.code !== 'ENOENT') {
+                console.error('Error reading file:', err);
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Internal Server Error');
+                return;
+            }
 
-    res.end();
+            const latestMessage = (data || '').trim();
+
+            // Serve the form page with the latest message
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.write('<html><body>');
+
+            // Display the latest message
+            if (latestMessage !== '') {
+                res.write(`<p>${latestMessage}</p>`);
+            }
+
+            // Display the form
+            res.write('<form method="POST" action="/submit">');
+            res.write('<label for="message">Enter your message:</label>');
+            res.write('<input type="text" name="message" id="message">');
+            res.write('<button type="submit">Submit</button>');
+            res.write('</form>');
+            res.write('</body></html>');
+            res.end();
+        });
+    }
 });
 
 server.listen(4000, () => {
