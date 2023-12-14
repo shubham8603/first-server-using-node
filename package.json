@@ -1,0 +1,15 @@
+{
+  "name": "first-server-using-node",
+  "version": "1.0.0",
+  "description": "first node app",
+  "main": "firstapp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "firstapp.js"
+  },
+  "author": "shubham",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
