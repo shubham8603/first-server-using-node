@@ -49,6 +49,29 @@ async function handleSubmitRoute(req, res) {
         }
     });
 }
+async function handleAboutRoute(req, res) {
+    const body = [];
+
+    req.on('data', (chunk) => {
+        body.push(chunk);
+    });
+
+    req.on('end', async () => {
+        try {
+            const data = Buffer.concat(body).toString();
+            const formData = new URLSearchParams(data);
+            const message = formData.get('message');
+
+            await fs.writeFile('messages.txt', `${message}\n`);
+            res.writeHead(303, { 'Location': '/About' });
+            res.end();
+        } catch (error) {
+            console.error('Error writing to file:', error);
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Internal Server Error');
+        }
+    });
+}
 
 module.exports = {
     handleDefaultRoute,
