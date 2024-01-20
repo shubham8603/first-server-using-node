@@ -1,11 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Success</title>
     <style>
-        .body{
+         .body{
             padding: 0;
             margin: 0;
             font-family: sans-serif;
@@ -40,6 +41,39 @@
             color:rgb(160, 160, 242);
         }
 
+        .form-control{
+            margin: 1rem 0 ;
+        }
+
+
+        .form-control label,
+        .form-control input{
+            display: block;
+            width: 100%;
+        }
+        .form-control input {
+            border: 1px;
+            font: inherit;
+            border: rgb(255, 106, 47);
+            background-color: aquamarine;
+            border-radius: 2px;
+            width: 200px;
+      height: 30px;
+        }
+        button{
+            font: inherit;
+            border: 1px solid #10f349;
+            color: #5f26d1;
+            background: #e2e1e5;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover,
+        button:active{
+            background-color:#b6f1c5 ;
+            color: white ;
+        }
+
     </style>
 </head>
 <body>
@@ -48,13 +82,11 @@
             <ul class="main_header__item-list">
                 <li class="main_header__item"><a class="active" href="/">Shop</a></li>
                 <li class="main_header__item"><a href="/admin/add-product">add product</a></li>
-                <li class="main_header__item"><a href="/contactus">contact us</a></li>
+                <li class="main_header__item"><a href="/contactus">Contact Us</a></li>
             </ul>
         </nav>
     </header>
-    <main>
-        <h1>My Products</h1>
-        <p>List Of all Products...<p>
-    </main>
+    <h2>Form Successfully Filled</h2>
+    <p>Thank you for submitting the form. We will get back to you shortly.</p>
 </body>
 </html>
