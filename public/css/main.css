@@ -1,0 +1,120 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.main-header {
+    width: 100%;
+    height: 3.5rem;
+    background-color: aqua;
+}
+
+.main-header__nav {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+main {
+    padding: 1rem;
+    max-width: 800px;
+    margin: 0 auto; /* Center the main content */
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.main-header__item-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.main-header__item {
+    margin: 0;
+    padding: 0;
+}
+
+.main-header__item a {
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.main-header__item a:hover,
+.main-header__item a:active,
+.main-header__item a.active {
+    color: rgb(160, 160, 242);
+}
+
+.main-header__item a.active {
+    font-weight: bold;
+}
+
+h1 {
+    color: #333;
+}
+
+p {
+    color: #666;
+}
+
+h2 {
+    margin: 1rem 0;
+    color: #333;
+    text-align: center;
+}
+
+.product-form {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-control {
+    margin: 1rem 0;
+}
+
+.form-control label,
+.form-control textarea,
+.form-control input {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.form-control input,
+.form-control textarea {
+    border: 1px solid #ff6a2f;
+    background-color: aquamarine;
+    border-radius: 3px;
+    padding: 0.5rem;
+}
+
+button {
+    font: inherit;
+    border: 1px solid #10f349;
+    color: #5f26d1;
+    background: #e2e1e5;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+}
+
+button:hover,
+button:active {
+    background-color: #b6f1c5;
+    color: white;
+}
+
+/* Center the /shop section */
+.shop-container {
+    margin: 0 auto;
+}
