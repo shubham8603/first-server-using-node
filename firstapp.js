@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+const successController = require('./controllers/success')
+
 const adminRoutes= require('./routes/admin');
 const shopRoutes= require('./routes/shop');
 const contactusRoutes= require('./routes/contactus');
@@ -15,9 +17,7 @@ app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(contactusRoutes);
 
-app.get('/success', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'success.html'));
-});
+app.get('/success',successController.getsuccess );
 
 
 app.use((req,res,next)=>{
