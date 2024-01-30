@@ -1,17 +1,24 @@
 const fs = require('fs');
 const path = require('path');
 
-const productsFilePath = path.join(__dirname, 'products.json');
+const getDataFilePath = (fileName) => path.join(__dirname, fileName);
 
-const getProductsFromFile = (callback) => {
-    fs.readFile(productsFilePath, (err, fileContent) => {
-        if (err) {
-            callback([]);
-        } else {
-            callback(JSON.parse(fileContent));
-        }
-    });
+const readFile = (fileName) => {
+    try {
+        const filePath = getDataFilePath(fileName);
+        const fileContent = fs.readFileSync(filePath, 'utf8');
+        return JSON.parse(fileContent) || [];
+    } catch (error) {
+        return [];
+    }
 };
+
+const writeFile = (fileName, data) => {
+    const filePath = getDataFilePath(fileName);
+    fs.writeFileSync(filePath, JSON.stringify(data));
+};
+
+const productsFile = 'products.json';
 
 module.exports = class Product {
     constructor(t) {
@@ -19,17 +26,12 @@ module.exports = class Product {
     }
 
     save() {
-        getProductsFromFile((products) => {
-            products.push(this);
-            fs.writeFile(productsFilePath, JSON.stringify(products), (err) => {
-                if (err) {
-                    console.error('Error writing products file:', err);
-                }
-            });
-        });
+        const products = this.fetchAll();
+        products.push(this);
+        writeFile(productsFile, products);
     }
 
-    static fetchAll(callback) {
-        getProductsFromFile(callback);
+    static fetchAll() {
+        return readFile(productsFile);
     }
 };
