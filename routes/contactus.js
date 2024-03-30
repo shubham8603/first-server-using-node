@@ -1,12 +1,14 @@
-
+const path = require('path');
 
 const express = require('express');
+
 const router = express.Router();
 
-const contactusController = require('../controllers/contactus')
+const productController = require('../controller/contact.js');
 
-router.get('/contactus', contactusController.getContactUs );
 
-router.post('/contactus', contactusController.postContactus );
+router.get('/',productController.getContact);
+
+router.post('/',productController.postContact);
 
 module.exports = router;

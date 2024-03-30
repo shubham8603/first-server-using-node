@@ -1,27 +1,24 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const db = require('./util/database');
 const app = express();
+//db.execute('SELECT * from products');
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const contactRoutes = require('./routes/contactus');
+const successRoutes = require('./routes/success');
 
-const successController = require('./controllers/success')
+const productController = require('./controller/error.js')
 
-const adminRoutes= require('./routes/admin');
-const shopRoutes= require('./routes/shop');
-const contactusRoutes= require('./routes/contactus');
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(express.static(path.join(__dirname,'public',)))
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/add-product',adminRoutes);
+app.use('/shop',shopRoutes);
+app.use('/contactus',contactRoutes);
+app.use('/success',successRoutes);
 
-app.use(express.static(path.join(__dirname, 'public')))
-
-app.use('/admin',adminRoutes);
-app.use(shopRoutes);
-app.use(contactusRoutes);
-
-app.get('/success',successController.getsuccess );
-
-
-app.use((req,res,next)=>{
-res.status(404).sendFile(path.join(__dirname,'views','404.html'))
-});
+app.use(productController.useError);
 
 app.listen(4000);

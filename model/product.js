@@ -1,37 +1,45 @@
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
+const p = path.join(
+    path.dirname(process.mainModule.filename),
+    'data',
+    'products.json'
+);
 
-const getDataFilePath = (fileName) => path.join(__dirname, fileName);
-
-const readFile = (fileName) => {
-    try {
-        const filePath = getDataFilePath(fileName);
-        const fileContent = fs.readFileSync(filePath, 'utf8');
-        return JSON.parse(fileContent) || [];
-    } catch (error) {
-        return [];
-    }
+const getProductFromFile = (cb) => {
+    fs.readFile(p, (err, filecontent) => {
+        if (err) {
+            cb([]);
+        } else {
+            // Check if filecontent is not empty
+            if (filecontent.length > 0) {
+                cb(JSON.parse(filecontent));
+            } else {
+                cb([]);
+            }
+        }
+    });
 };
-
-const writeFile = (fileName, data) => {
-    const filePath = getDataFilePath(fileName);
-    fs.writeFileSync(filePath, JSON.stringify(data));
-};
-
-const productsFile = 'products.json';
 
 module.exports = class Product {
-    constructor(t) {
-        this.title = t;
+    constructor(title) {
+        this.title = title;
     }
 
     save() {
-        const products = this.fetchAll();
-        products.push(this);
-        writeFile(productsFile, products);
+        getProductFromFile((products) => {
+            products.push(this);
+            fs.writeFile(p, JSON.stringify(products), (err) => {
+                if (err) {
+                    console.error('Error writing file:', err);
+                } else {
+                    console.log('Product saved successfully.');
+                }
+            });
+        });
     }
 
-    static fetchAll() {
-        return readFile(productsFile);
+    static fetchAll(cb) {
+        getProductFromFile(cb);
     }
 };
