@@ -20,9 +20,23 @@
     <main>
        <h1>My products</h1>
        <p>List of all the products...</p>
-<ul class="product-list"></ul>
-
+       <ul class="product-list" id="productList"></ul>
     </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const productList = document.getElementById("productList");
+
+            // Get the products from localStorage
+            let products = JSON.parse(localStorage.getItem("products")) || [];
+
+            // Display the products in the list
+            products.forEach(function(product) {
+                const li = document.createElement("li");
+                li.textContent = product;
+                productList.appendChild(li);
+            });
+        });
+    </script>
     
 </body>
 </html>
