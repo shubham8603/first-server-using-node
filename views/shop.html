@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop</title>
     <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .product {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-buttons {
+            display: flex;
+            gap: 5px;
+        }
+    </style>
 </head>
 <body>
     <header class="main-header">
@@ -18,25 +30,57 @@
         </nav>
     </header>
     <main>
-       <h1>My products</h1>
-       <p>List of all the products...</p>
-       <ul class="product-list" id="productList"></ul>
+        <h1>My products</h1>
+        <p>List of all the products...</p>
+        <ul id="productList" class="product-list"></ul>
     </main>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const productList = document.getElementById("productList");
 
-            // Get the products from localStorage
             let products = JSON.parse(localStorage.getItem("products")) || [];
 
-            // Display the products in the list
-            products.forEach(function(product) {
-                const li = document.createElement("li");
-                li.textContent = product;
-                productList.appendChild(li);
-            });
+            renderProducts();
+
+            function renderProducts() {
+                productList.innerHTML = "";
+                products.forEach(function(product, index) {
+                    const li = document.createElement("li");
+                    li.classList.add("product");
+
+                    const productText = document.createElement("span");
+                    productText.textContent = product;
+                    li.appendChild(productText);
+
+                    const buttonsDiv = document.createElement("div");
+                    buttonsDiv.classList.add("product-buttons");
+
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "Delete";
+                    deleteBtn.addEventListener("click", function() {
+                        products.splice(index, 1);
+                        localStorage.setItem("products", JSON.stringify(products));
+                        renderProducts();
+                    });
+                    buttonsDiv.appendChild(deleteBtn);
+
+                    const editBtn = document.createElement("button");
+                    editBtn.textContent = "Edit";
+                    editBtn.addEventListener("click", function() {
+                        const newName = prompt("Enter new name for product", product);
+                        if (newName) {
+                            products[index] = newName;
+                            localStorage.setItem("products", JSON.stringify(products));
+                            renderProducts();
+                        }
+                    });
+                    buttonsDiv.appendChild(editBtn);
+
+                    li.appendChild(buttonsDiv);
+                    productList.appendChild(li);
+                });
+            }
         });
     </script>
-    
 </body>
 </html>
